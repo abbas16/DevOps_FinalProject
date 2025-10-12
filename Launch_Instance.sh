@@ -9,7 +9,7 @@ SECURITY_GROUP="sg-07c0a6afcab5f0695"
 SUBNET_ID="subnet-08d70d957419c303d"            # optional
 REGION="us-east-2"
 
-# Create a small user-data script that installs Docker and runs nginx
+# Create a user-data script that installs Docker and runs nginx
 cat > userdata.sh <<'EOF'
 #!/bin/bash
 exec > /var/log/user-data.log 2>&1
