@@ -12,9 +12,11 @@ REGION="us-east-2"
 # Create a small user-data script that installs Docker and runs nginx
 cat > userdata.sh <<'EOF'
 #!/bin/bash
+exec > /var/log/user-data.log 2>&1
 apt-get update -y
-apt-get install -y docker.io git
+apt-get install -y docker.io
 systemctl start docker
+systemctl enable docker
 docker run -d -p 80:80 nginx
 EOF
 
