@@ -1,4 +1,4 @@
-name: CI/CD pipline Deploy Intance on AWS 
+name: Deploy Intance on AWS 
 
 on:
   push:
