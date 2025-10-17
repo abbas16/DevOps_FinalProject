@@ -18,6 +18,13 @@ apt-get install -y docker.io
 systemctl start docker
 systemctl enable docker
 docker run -d -p 80:80 nginx
+# Pull and run Grafana container
+docker run -d \
+-p 3000:3000 \
+--name grafana \
+-e "GF_SECURITY_ADMIN_USER=admin" \
+-e "GF_SECURITY_ADMIN_PASSWORD=admin" \
+grafana/grafana:latest
 EOF
 
 # Launch instance
