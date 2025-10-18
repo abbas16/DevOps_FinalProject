@@ -31,12 +31,27 @@ docker run -d \
 -p 9100:9100 \
 --name node-exporter \
 prom/node-exporter:latest
-# Run Prometheus 
-sudo docker run -d \
---name prometheus \
--p 9090:9090 \
--v /prometheus-data:/prometheus \
-prom/prometheus:latest
+# Create Prometheus config
+cat << 'EOPROM' > /home/ubuntu/prometheus.yml
+global:
+  scrape_interval: 5s
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['localhost:9100']
+EOPROM
+
+# Run Prometheus container with config file
+docker run -d \
+  -p 9090:9090 \
+  --name prometheus \
+  -v /home/ubuntu/prometheus.yml:/etc/prometheus/prometheus.yml \
+  prom/prometheus:latest
 EOF
 
 # Launch instance
