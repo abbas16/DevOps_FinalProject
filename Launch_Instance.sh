@@ -31,6 +31,12 @@ docker run -d \
 -p 9100:9100 \
 --name node-exporter \
 prom/node-exporter:latest
+# Run Prometheus 
+sudo docker run -d \
+--name prometheus \
+-p 9090:9090 \
+-v /prometheus-data:/prometheus \
+prom/prometheus
 EOF
 
 # Launch instance
