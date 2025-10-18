@@ -36,7 +36,7 @@ sudo docker run -d \
 --name prometheus \
 -p 9090:9090 \
 -v /prometheus-data:/prometheus \
-prom/prometheus
+prom/prometheus:latest
 EOF
 
 # Launch instance
@@ -57,3 +57,4 @@ PUBLIC_IP=$(aws ec2 describe-instances --instance-ids "$INSTANCE_ID" --query 'Re
 echo "Public IP: $PUBLIC_IP"
 echo "Grafana Dashboard: $PUBLIC_IP:3000"
 echo "Node Exporter: $PUBLIC_IP:9100/metrics"
+echo "Prometheus: $PUBLIC_IP:9090"
