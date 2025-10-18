@@ -1,30 +1,36 @@
 #!/bin/bash
 set -e
 
-# Default variables (override via env in GitHub Actions)
-AMI_ID="ami-0d9a665f802ae6227"      # replace with real Ubuntu AMI in your region
+# variable
+AMI_ID="ami-0d9a665f802ae6227"
 INSTANCE_TYPE="t3.micro"
-KEY_NAME="Final"        # MUST match an EC2 Key Pair in your account
+KEY_NAME="Final"
 SECURITY_GROUP="sg-07c0a6afcab5f0695"
-SUBNET_ID="subnet-08d70d957419c303d"            # optional
+SUBNET_ID="subnet-08d70d957419c303d"
 REGION="us-east-2"
 
-# Create a user-data script that installs Docker and runs nginx
+# user-data
 cat > userdata.sh <<'EOF'
 #!/bin/bash
 exec > /var/log/user-data.log 2>&1
+# installs Docker and runs nginx
 apt-get update -y
 apt-get install -y docker.io
 systemctl start docker
 systemctl enable docker
 docker run -d -p 80:80 nginx
-# Pull and run Grafana container
+# run Grafana container
 docker run -d \
 -p 3000:3000 \
 --name grafana \
 -e "GF_SECURITY_ADMIN_USER=admin" \
 -e "GF_SECURITY_ADMIN_PASSWORD=admin" \
 grafana/grafana:latest
+# Run Node Exporter container
+docker run -d \
+-p 9100:9100 \
+--name node-exporter \
+prom/node-exporter:latest
 EOF
 
 # Launch instance
@@ -43,3 +49,5 @@ aws ec2 wait instance-running --instance-ids "$INSTANCE_ID" --region "$REGION"
 
 PUBLIC_IP=$(aws ec2 describe-instances --instance-ids "$INSTANCE_ID" --query 'Reservations[0].Instances[0].PublicIpAddress' --output text --region "$REGION")
 echo "Public IP: $PUBLIC_IP"
+echo "Grafana Dashboard: $PUBLIC_IP:3000"
+echo "Node Exporter: $PUBLIC_IP:9100/metrics"
