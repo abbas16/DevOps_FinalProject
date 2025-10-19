@@ -43,13 +43,13 @@ Deploys Nginx, Grafana, Prometheus, Node Exporter
 
 Service	URL Example
 
-Nginx	http://<EC2-Public-IP>
+Nginx	http://EC2-Public-IP
 
-Grafana	http://<EC2-Public-IP>:3000
+Grafana	http://EC2-Public-IP:3000
 
-Prometheus	http://<EC2-Public-IP>:9090
+Prometheus	http://EC2-Public-IP:9090
 
-Node Exporter	http://<EC2-Public-IP>:9100/metrics
+Node Exporter	http://EC2-Public-IP:9100/metrics
 
 
 
@@ -63,4 +63,4 @@ Grafana reads data from Prometheus and displays dashboards
 
 
 
-![Flow Daigram](Flow Daigram.png)
+![Flow Daigram](Flow-Daigram.png)
